@@ -4,10 +4,10 @@
 #include "Point.h"
 #include "Maze.h"
 #include "Mouse.h"
-#include "Game.h" // ¥]§t©Ò¦³¹CÀ¸Ãş§Oªº©â¶H°òÃş
-#include "Utility.h" // ¥]§t²M«Ì§»©M³Ó§Qµe­±
+#include "Game.h" 
+#include "Utility.h" 
 
-// ¦UÃö¥d°g®c¸ê®Æ
+// å„é—œå¡è¿·å®®è³‡æ–™
 std::vector<std::vector<int>> mazeMap1 =
 {
     {1,1,1,1,1},
@@ -40,10 +40,10 @@ std::vector<std::vector<int>> mazeMap3 =
     {1,1,1,1,1,1,1,1,1,1}
 };
 
-// Ãö¥d 4 ¨Ï¥Îªº¦a¹Ï (»P mazeMap3 ¬Û¦P)
+// é—œå¡ 4 ä½¿ç”¨çš„åœ°åœ– (èˆ‡ mazeMap3 ç›¸åŒ)
 std::vector<std::vector<int>> mazeMap4_box = mazeMap3;
 
-// Ãö¥d 5 (°gÃú¨t²Î) ¨Ï¥Îªº­ì©l¦r¦ê°g®c
+// é—œå¡ 5 (è¿·éœ§ç³»çµ±) ä½¿ç”¨çš„åŸå§‹å­—ä¸²è¿·å®®
 std::vector<std::string> rawMaze_fog = {
         "####################",
         "#P     #       #   #",
@@ -62,50 +62,50 @@ std::vector<std::string> rawMaze_fog = {
 int main() {
     int totalMoves = 0;
 
-    // Ãö¥d 1
+    // 1
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 1 (Â²³æ°g®c) ---\n";
+    std::cout << "\n--- é—–é—œ 1 (ç°¡å–®è¿·å®®) ---\n";
     NormalGame game1(mazeMap1, Point(1, 1), Point(3, 3));
     totalMoves += game1.play();
 
-    // Ãö¥d 2
+    // 2
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 2 (¤¤µ¥°g®c) ---\n";
+    std::cout << "\n--- é—–é—œ 2 (ä¸­ç­‰è¿·å®®) ---\n";
     NormalGame game2(mazeMap2, Point(1, 1), Point(5, 5));
     totalMoves += game2.play();
 
-    // Ãö¥d 3
+    // 3
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 3 (½ÆÂø°g®c) ---\n";
+    std::cout << "\n--- é—–é—œ 3 (è¤‡é›œè¿·å®®) ---\n";
     NormalGame game3(mazeMap3, Point(1, 1), Point(8, 8));
     totalMoves += game3.play();
 
-    // Ãö¥d 4 (±À½c¤l°g®c)
+    // // é—œå¡ 4 (æ¨ç®±å­è¿·å®®)
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 4 (±À½c¤l°g®c) ---\n";
+    std::cout << "\n--- é—–é—œ 4 (æ¨ç®±å­è¿·å®®) ---\n";
     BoxGame game4(mazeMap4_box, Point(1, 1), Point(8, 8), Point(3, 2), Point(6, 8));
     totalMoves += game4.play();
 
-    // Ãö¥d 5 (°gÃú°g®c)
+    // é—œå¡ 5 (è¿·éœ§è¿·å®®)
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 5 (°gÃú°g®c) ---\n";
+    std::cout << "\n--- é—–é—œ 5 (è¿·éœ§è¿·å®®) ---\n";
     FogGame game5(rawMaze_fog, Point(1, 1), Point(18, 3));
     totalMoves += game5.play();
 
-    // Ãö¥d 6 (°ÊºA­«ºc°g®c)
+    // é—œå¡ 6 (å‹•æ…‹é‡æ§‹è¿·å®®)
     system(CLEAR_SCREEN);
-    std::cout << "\n--- ÂôÃö 6 (°ÊºA­«ºc°g®c) ---\n";
-    DynamicGame game6(30, 15); // ¤£¦A»İ­n¶Ç¤J start ©M end¡A¥¦­Ì·|¦b DynamicGame ¤º³¡³B²z
+    std::cout << "\n--- é—–é—œ 6 (å‹•æ…‹é‡æ§‹è¿·å®®) ---\n";
+    DynamicGame game6(30, 15); // ä¸å†éœ€è¦å‚³å…¥ start å’Œ endï¼Œå®ƒå€‘æœƒåœ¨ DynamicGame å…§éƒ¨è™•ç†
     totalMoves += game6.play();
 
 
-    // §¹¦¨©Ò¦³Ãö¥d«áªºÁ`µ²
+    // å®Œæˆæ‰€æœ‰é—œå¡å¾Œçš„ç¸½çµ
     system(CLEAR_SCREEN);
     printVictoryScreen();
-    std::cout << "®¥³ß±z¡I§¹¦¨©Ò¦³Ãö¥d¡I\n";
-    std::cout << "Á`²¾°Ê¦¸¼Æ: " << totalMoves << " ¦¸¡C\n";
+    std::cout << "æ­å–œæ‚¨ï¼å®Œæˆæ‰€æœ‰é—œå¡ï¼\n";
+    std::cout << "ç¸½ç§»å‹•æ¬¡æ•¸: " << totalMoves << " æ¬¡ã€‚\n";
 
-    std::cout << "«ö¤U Enter Áäµ²§ô¹CÀ¸...";
+    std::cout << "æŒ‰ä¸‹ Enter éµçµæŸéŠæˆ²...";
     std::cin.ignore();
     std::cin.get();
     return 0;
