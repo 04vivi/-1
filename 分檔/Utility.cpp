@@ -1,6 +1,11 @@
 #include "Utility.h"
 #include <string>
 
+void Enter() {
+    std::cout << "請按 Enter 鍵繼續...";
+    std::cin.ignore(); // 忽略之前輸入留下的換行符
+    std::cin.get();    // 等待玩家按 Enter
+}
 
 void waitForEnter() {
     std::cout << "撞到牆了！請按 Enter 鍵繼續...";
