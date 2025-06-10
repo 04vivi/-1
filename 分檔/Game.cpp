@@ -1,48 +1,48 @@
 #include "Game.h"
-#include "Utility.h" // ¥]§t²M«Ì§»
+#include "Utility.h" // åŒ…å«æ¸…å±å®
 #include <chrono>
 #include <thread>
 
 
 
-// Game ©â¶H°òÃşªº«Øºc¤l 1
+// Game æŠ½è±¡åŸºé¡çš„å»ºæ§‹å­ 1
 Game::Game(const std::vector<std::vector<int>>& mazeData, Point start, Point end)
     : maze(mazeData), mouse(start), end(end) {
 }
 
-// Game ©â¶H°òÃşªº«Øºc¤l 2
+// Game æŠ½è±¡åŸºé¡çš„å»ºæ§‹å­ 2
 Game::Game(const std::vector<std::string>& rawMazeData, Point start, Point end)
     : maze(rawMazeData), mouse(start), end(end) {
 }
 
-// Game ©â¶H°òÃşªº«Øºc¤l 3
+// Game æŠ½è±¡åŸºé¡çš„å»ºæ§‹å­ 3
 Game::Game(int width, int height)
     : maze(width, height), mouse({ 1,1 }), end({ width - 2, height - 2 }) {
-    // ¹ê»Úªº°_©lÂI©M²×ÂI·|¦b DynamicGame ¤º³¡³]¸m
+    // å¯¦éš›çš„èµ·å§‹é»å’Œçµ‚é»æœƒåœ¨ DynamicGame å…§éƒ¨è¨­ç½®
 }
 
-// --- NormalGame ¹ê§@ ---
+// --- NormalGame å¯¦ä½œ ---
 NormalGame::NormalGame(const std::vector<std::vector<int>>& mazeData, Point start, Point end)
     : Game(mazeData, start, end) {
 }
 
 int NormalGame::play() {
-    std::cout << "\n--- ´¶³q°g®cÃö¥d ---\n";
-    std::cout << "¨Ï¥Î w/a/s/d ±±¨î¦Ñ¹«(@)¨«¥X°g®c(+)¡C\n";
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::cout << "\n--- æ™®é€šè¿·å®®é—œå¡ ---\n";
+    std::cout << "ä½¿ç”¨ w/a/s/d æ§åˆ¶è€é¼ (@)èµ°å‡ºè¿·å®®(+)ã€‚\n";
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     while (true) {
         system(CLEAR_SCREEN);
         Point curr = mouse.getPosition();
-        maze.display(curr, end); // µL°gÃúÅã¥Ü
+        maze.display(curr, end); // ç„¡è¿·éœ§é¡¯ç¤º
 
         if (curr == end) {
-            std::cout << "\n¦¨¥\¨«¥X°g®c¡I\n";
-            std::cout << "Á`²¾°Ê¦¸¼Æ: " << mouse.getMoveCount() << "\n";
+            std::cout << "\næˆåŠŸèµ°å‡ºè¿·å®®ï¼\n";
+            std::cout << "ç¸½ç§»å‹•æ¬¡æ•¸: " << mouse.getMoveCount() << "\n";
             return mouse.getMoveCount();
         }
 
-        std::cout << "\n¥Ø«e¦ì¸m: (" << curr.x << ", " << curr.y << ")¡A¥i¨«¤è¦V: ";
+        std::cout << "\nç›®å‰ä½ç½®: (" << curr.x << ", " << curr.y << ")ï¼Œå¯èµ°æ–¹å‘: ";
         bool hasValidMove = false;
         for (int i = 0; i < 4; ++i) {
             Point next = { curr.x + Directions[i].x, curr.y + Directions[i].y };
@@ -51,8 +51,8 @@ int NormalGame::play() {
                 hasValidMove = true;
             }
         }
-        if (!hasValidMove) std::cout << "µL¡]¦º¸ô¡^";
-        std::cout << "\n½Ğ¿é¤J¤è¦V¡G";
+        if (!hasValidMove) std::cout << "ç„¡ï¼ˆæ­»è·¯ï¼‰";
+        std::cout << "\nè«‹è¼¸å…¥æ–¹å‘ï¼š";
         char input;
         std::cin >> input;
         input = tolower(input);
@@ -66,15 +66,15 @@ int NormalGame::play() {
         }
 
         if (DirIndex == -1) {
-            std::cout << "µL®Ä¿é¤J¡A½Ğ¿é¤J w/s/a/d¡C\n";
-            std::this_thread::sleep_for(std::chrono::seconds(1));  // °± 1 ¬í
+            std::cout << "ç„¡æ•ˆè¼¸å…¥ï¼Œè«‹è¼¸å…¥ w/s/a/dã€‚\n";
+            std::this_thread::sleep_for(std::chrono::seconds(3));  // åœ 3 ç§’
             continue;
         }
 
         Point next = { curr.x + Directions[DirIndex].x, curr.y + Directions[DirIndex].y };
         if (!maze.isWalkable(next.x, next.y)) {
-            std::cout << "¨ºÃä¬OÀğ¾À¡A¤£¯à¨«¡I\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::cout << "é‚£é‚Šæ˜¯ç‰†å£ï¼Œä¸èƒ½èµ°ï¼\n";
+            waitForEnter();
             continue;
         }
 
@@ -82,39 +82,39 @@ int NormalGame::play() {
     }
 }
 
-// --- BoxGame ¹ê§@ ---
+// --- BoxGame å¯¦ä½œ ---
 BoxGame::BoxGame(const std::vector<std::vector<int>>& mazeData, Point start, Point end, Point boxStart, Point target)
     : Game(mazeData, start, end), box(boxStart), boxTarget(target), startMouse(start), startBox(boxStart) {
 }
 
 int BoxGame::play() {
-    std::cout << "\n--- ±À½c¤l°g®cÃö¥d ---\n";
-    std::cout << "§A¥²¶·§â½c¤l(2)±À¨ì X ¤~¯à¨«¥X°g®c(+)¡I\n";
-    std::cout << "¿é¤J r ¥i­«¸m¦ì¸m¡C\n";
+    std::cout << "\n--- æ¨ç®±å­è¿·å®®é—œå¡ ---\n";
+    std::cout << "ä½ å¿…é ˆæŠŠç®±å­(2)æ¨åˆ° X æ‰èƒ½èµ°å‡ºè¿·å®®(+)ï¼\n";
+    std::cout << "è¼¸å…¥ r å¯é‡ç½®ä½ç½®ã€‚\n";
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
 
     while (true) {
         system(CLEAR_SCREEN);
         Point curr = mouse.getPosition();
-        maze.display(curr, end, &box, &boxTarget); // µL°gÃúÅã¥Ü
+        maze.display(curr, end, &box, &boxTarget); // ç„¡è¿·éœ§é¡¯ç¤º
 
         if (curr == end && box == boxTarget) {
-            std::cout << "\n®¥³ß¡I§A¦¨¥\±N½c¤l±À¨ì¥Ø¼Ğ¨Ã¨«¥X°g®c¡I\n";
-            std::cout << "Á`²¾°Ê¦¸¼Æ: " << mouse.getMoveCount() << "\n";
+            std::cout << "\næ­å–œï¼ä½ æˆåŠŸå°‡ç®±å­æ¨åˆ°ç›®æ¨™ä¸¦èµ°å‡ºè¿·å®®ï¼\n";
+            std::cout << "ç¸½ç§»å‹•æ¬¡æ•¸: " << mouse.getMoveCount() << "\n";
             return mouse.getMoveCount();
         }
 
-        std::cout << "\n¥Ø«e¦ì¸m: (" << curr.x << ", " << curr.y << ")¡A¥i¨«¤è¦V: ";
+        std::cout << "\nç›®å‰ä½ç½®: (" << curr.x << ", " << curr.y << ")ï¼Œå¯èµ°æ–¹å‘: ";
         bool hasValidMove = false;
         for (int i = 0; i < 4; ++i) {
             Point nextPlayerPos = { curr.x + Directions[i].x, curr.y + Directions[i].y };
             if (maze.isWalkable(nextPlayerPos.x, nextPlayerPos.y)) {
                 if (nextPlayerPos == box) {
                     Point nextBoxPos = { box.x + Directions[i].x, box.y + Directions[i].y };
-                    // ÀË¬d½c¤l±À°Ê«áªº¦ì¸m¬O§_¥i³q¦æ¡A¥B¤£»Pª±®a·í«e¦ì¸m­«Å|¡]¨¾¤î½c¤l±À¨ìª±®a¨­¤W¡^
+                    // æª¢æŸ¥ç®±å­æ¨å‹•å¾Œçš„ä½ç½®æ˜¯å¦å¯é€šè¡Œï¼Œä¸”ä¸èˆ‡ç©å®¶ç•¶å‰ä½ç½®é‡ç–Šï¼ˆé˜²æ­¢ç®±å­æ¨åˆ°ç©å®¶èº«ä¸Šï¼‰
                     if (maze.isWalkable(nextBoxPos.x, nextBoxPos.y) && nextBoxPos != curr) {
-                        std::cout << DirNames[i] << "(" << DirKeys[i] << ", ±À½c) ";
+                        std::cout << DirNames[i] << "(" << DirKeys[i] << ", æ¨ç®±) ";
                         hasValidMove = true;
                     }
                 }
@@ -124,9 +124,9 @@ int BoxGame::play() {
                 }
             }
         }
-        std::cout << "­«¸m(r) ";
-        if (!hasValidMove) std::cout << "µL¦³®Ä²¾°Ê";
-        std::cout << "\n½Ğ¿é¤J¤è¦V¡G";
+        std::cout << "é‡ç½®(r) ";
+        if (!hasValidMove) std::cout << "ç„¡æœ‰æ•ˆç§»å‹•";
+        std::cout << "\nè«‹è¼¸å…¥æ–¹å‘ï¼š";
         char input;
         std::cin >> input;
         input = tolower(input);
@@ -134,7 +134,7 @@ int BoxGame::play() {
         if (input == 'r') {
             box = startBox;
             mouse = Mouse(startMouse);
-            std::cout << "¤w­«¸m¦ì¸m¡I\n";
+            std::cout << "å·²é‡ç½®ä½ç½®ï¼\n";
             continue;
         }
 
@@ -147,7 +147,7 @@ int BoxGame::play() {
         }
 
         if (DirIndex == -1) {
-            std::cout << "µL®Ä¿é¤J¡A½Ğ¿é¤J w/s/a/d ©Î r¡C\n";
+            std::cout << "ç„¡æ•ˆè¼¸å…¥ï¼Œè«‹è¼¸å…¥ w/s/a/d æˆ– rã€‚\n";
             continue;
         }
 
@@ -161,44 +161,44 @@ int BoxGame::play() {
                 mouse.move(nextPlayerPos);
             }
             else {
-                std::cout << "½c¤lµLªk±À°Ê¨º­Ó¤è¦V¡I\n";
+                std::cout << "ç®±å­ç„¡æ³•æ¨å‹•é‚£å€‹æ–¹å‘ï¼\n";
             }
         }
         else if (maze.isWalkable(nextPlayerPos.x, nextPlayerPos.y)) {
             mouse.move(nextPlayerPos);
         }
         else {
-            std::cout << "¨ºÃä¬OÀğ¾À¡A¤£¯à¨«¡I\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::cout << "é‚£é‚Šæ˜¯ç‰†å£ï¼Œä¸èƒ½èµ°ï¼\n";
+            waitForEnter();
         }
     }
 }
 
-// --- FogGame ¹ê§@ ---
+// --- FogGame å¯¦ä½œ ---
 FogGame::FogGame(const std::vector<std::string>& rawMazeData, Point start, Point end)
     : Game(rawMazeData, start, end) {
-    // ¦b«Øºc¤l¤¤¡AGame ªº«Øºc¤l·|¦Û°Ê©I¥s maze.updateVisibility ¶i¦æªì©l¤Æ
+    // åœ¨å»ºæ§‹å­ä¸­ï¼ŒGame çš„å»ºæ§‹å­æœƒè‡ªå‹•å‘¼å« maze.updateVisibility é€²è¡Œåˆå§‹åŒ–
 }
 
 int FogGame::play() {
-    std::cout << "\n--- °gÃú°g®cÃö¥d ---\n";
-    std::cout << "³¡¤À°Ï°ì³Q°gÃúÅ¢¸n¡A¥u¦³±´¯Á¤~¯à´¦¶}¥ş»ª¡I\n";
-    std::cout << "¨Ï¥Î w/a/s/d ±±¨î¦Ñ¹«(@)¨«¥X°g®c(+)¡C\n";
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::cout << "\n--- è¿·éœ§è¿·å®®é—œå¡ ---\n";
+    std::cout << "éƒ¨åˆ†å€åŸŸè¢«è¿·éœ§ç± ç½©ï¼Œåªæœ‰æ¢ç´¢æ‰èƒ½æ­é–‹å…¨è²Œï¼\n";
+    std::cout << "ä½¿ç”¨ w/a/s/d æ§åˆ¶è€é¼ (@)èµ°å‡ºè¿·å®®(+)ã€‚\n";
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     while (true) {
         system(CLEAR_SCREEN);
         Point curr = mouse.getPosition();
-        maze.updateVisibility(curr.x, curr.y); // §ó·s°gÃúµø³¥
-        maze.display(curr, end); // ±a°gÃúÅã¥Ü
+        maze.updateVisibility(curr.x, curr.y); // æ›´æ–°è¿·éœ§è¦–é‡
+        maze.display(curr, end); // å¸¶è¿·éœ§é¡¯ç¤º
 
         if (curr == end) {
-            std::cout << "\n¦¨¥\¨«¥X°g®c¡I\n";
-            std::cout << "Á`²¾°Ê¦¸¼Æ: " << mouse.getMoveCount() << "\n";
+            std::cout << "\næˆåŠŸèµ°å‡ºè¿·å®®ï¼\n";
+            std::cout << "ç¸½ç§»å‹•æ¬¡æ•¸: " << mouse.getMoveCount() << "\n";
             return mouse.getMoveCount();
         }
 
-        std::cout << "\n¥Ø«e¦ì¸m: (" << curr.x << ", " << curr.y << ")¡A¥i¨«¤è¦V: ";
+        std::cout << "\nç›®å‰ä½ç½®: (" << curr.x << ", " << curr.y << ")ï¼Œå¯èµ°æ–¹å‘: ";
         bool hasValidMove = false;
         for (int i = 0; i < 4; ++i) {
             Point next = { curr.x + Directions[i].x, curr.y + Directions[i].y };
@@ -207,8 +207,8 @@ int FogGame::play() {
                 hasValidMove = true;
             }
         }
-        if (!hasValidMove) std::cout << "µL¡]¦º¸ô¡^";
-        std::cout << "\n½Ğ¿é¤J¤è¦V¡G";
+        if (!hasValidMove) std::cout << "ç„¡ï¼ˆæ­»è·¯ï¼‰";
+        std::cout << "\nè«‹è¼¸å…¥æ–¹å‘ï¼š";
         char input;
         std::cin >> input;
         input = tolower(input);
@@ -222,14 +222,14 @@ int FogGame::play() {
         }
 
         if (DirIndex == -1) {
-            std::cout << "µL®Ä¿é¤J¡A½Ğ¿é¤J w/s/a/d¡C\n";
+            std::cout << "ç„¡æ•ˆè¼¸å…¥ï¼Œè«‹è¼¸å…¥ w/s/a/dã€‚\n";
             continue;
         }
 
         Point next = { curr.x + Directions[DirIndex].x, curr.y + Directions[DirIndex].y };
         if (!maze.isWalkable(next.x, next.y)) {
-            std::cout << "¨ºÃä¬OÀğ¾À¡A¤£¯à¨«¡I\n";
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::cout << "é‚£é‚Šæ˜¯ç‰†å£ï¼Œä¸èƒ½èµ°ï¼\n";
+            waitForEnter();
             continue;
         }
 
@@ -237,54 +237,54 @@ int FogGame::play() {
     }
 }
 
-// --- DynamicGame ¹ê§@ ---
+// --- DynamicGame å¯¦ä½œ ---
 DynamicGame::DynamicGame(int width, int height)
     : Game(width, height), dynamicRng(std::chrono::steady_clock::now().time_since_epoch().count()) {
 
     std::uniform_int_distribution<int> dist_x(1, maze.getWidth() - 2);
     std::uniform_int_distribution<int> dist_y(1, maze.getHeight() - 2);
 
-    // ´`Àô¥Í¦¨ª½¨ì°g®c¤¤¦s¦b¥i¹F¸ô®|
+    // å¾ªç’°ç”Ÿæˆç›´åˆ°è¿·å®®ä¸­å­˜åœ¨å¯é”è·¯å¾‘
     bool pathFound = false;
     while (!pathFound) {
-        maze.generateInitialRandomMaze(); // ­«·s¥Í¦¨ÀH¾÷Àğ¾À¤À§G
+        maze.generateInitialRandomMaze(); // é‡æ–°ç”Ÿæˆéš¨æ©Ÿç‰†å£åˆ†ä½ˆ
 
-        // ÀH¾÷¿ï¾Ü°_©lÂI©M²×ÂI
+        // éš¨æ©Ÿé¸æ“‡èµ·å§‹é»å’Œçµ‚é»
         do {
             startPosition = { dist_x(dynamicRng), dist_y(dynamicRng) };
-        } while (maze.getCell(startPosition.x, startPosition.y) == '#'); // ½T«O°_ÂI¤£¬OÀğ¾À
+        } while (maze.getCell(startPosition.x, startPosition.y) == '#'); // ç¢ºä¿èµ·é»ä¸æ˜¯ç‰†å£
 
         do {
             currentExit = { dist_x(dynamicRng), dist_y(dynamicRng) };
-        } while (maze.getCell(currentExit.x, currentExit.y) == '#' || (currentExit.x == startPosition.x && currentExit.y == startPosition.y)); // ½T«O²×ÂI¤£¬OÀğ¾À¥B¤£»P°_ÂI­«Å|
+        } while (maze.getCell(currentExit.x, currentExit.y) == '#' || (currentExit.x == startPosition.x && currentExit.y == startPosition.y)); // ç¢ºä¿çµ‚é»ä¸æ˜¯ç‰†å£ä¸”ä¸èˆ‡èµ·é»é‡ç–Š
 
-        // ÀË¬d¸ô®|¬O§_¦s¦b
+        // æª¢æŸ¥è·¯å¾‘æ˜¯å¦å­˜åœ¨
         pathFound = maze.hasPath(startPosition.x, startPosition.y, currentExit.x, currentExit.y);
     }
-    mouse = Mouse(startPosition); // ªì©l¤Æª±®a¦ì¸m
-    end = currentExit; // ³]¸m¹CÀ¸¥X¤f¦ì¸m (ÁöµM DynamicGame ª½±µ¥Î currentExit¡A¦ı¬°Ä~©ÓÃö«YÁÙ¬O³]©w)
+    mouse = Mouse(startPosition); // åˆå§‹åŒ–ç©å®¶ä½ç½®
+    end = currentExit; // è¨­ç½®éŠæˆ²å‡ºå£ä½ç½® (é›–ç„¶ DynamicGame ç›´æ¥ç”¨ currentExitï¼Œä½†ç‚ºç¹¼æ‰¿é—œä¿‚é‚„æ˜¯è¨­å®š)
 }
 
 int DynamicGame::play() {
-    std::cout << "\n--- °ÊºA°g®cÃö¥d (Àğ¾À©M¥X¤f·|²¾°Ê¡I) ---\n";
-    std::cout << "¨C²¾°Ê 10 ¨B¡A°g®c¤¤ªºÀğ¾À·|ÀH¾÷­«ºc¡I\n";
-    std::cout << "¨C²¾°Ê 15 ¨B¡A¥X¤f(+)·|ÀH¾÷²¾°Ê¡I\n";
-    std::cout << "¨Ï¥Î w/a/s/d ±±¨î¦Ñ¹«(@)¨«¥X°g®c(+)¡C\n";
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    std::cout << "\n--- å‹•æ…‹è¿·å®®é—œå¡ (ç‰†å£å’Œå‡ºå£æœƒç§»å‹•ï¼) ---\n";
+    std::cout << "æ¯ç§»å‹• 10 æ­¥ï¼Œè¿·å®®ä¸­çš„ç‰†å£æœƒéš¨æ©Ÿé‡æ§‹ï¼\n";
+    std::cout << "æ¯ç§»å‹• 15 æ­¥ï¼Œå‡ºå£(+)æœƒéš¨æ©Ÿç§»å‹•ï¼\n";
+    std::cout << "ä½¿ç”¨ w/a/s/d æ§åˆ¶è€é¼ (@)èµ°å‡ºè¿·å®®(+)ã€‚\n";
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
     while (true) {
         system(CLEAR_SCREEN);
         Point curr = mouse.getPosition();
-        maze.display(curr, currentExit); // Åã¥Ü·í«e¥X¤f¦ì¸m
+        maze.display(curr, currentExit); // é¡¯ç¤ºç•¶å‰å‡ºå£ä½ç½®
 
         if (curr == currentExit) {
-            std::cout << "\n¦¨¥\¨«¥X°ÊºA°g®c¡I\n";
-            std::cout << "Á`²¾°Ê¦¸¼Æ: " << mouse.getMoveCount() << "\n";
+            std::cout << "\næˆåŠŸèµ°å‡ºå‹•æ…‹è¿·å®®ï¼\n";
+            std::cout << "ç¸½ç§»å‹•æ¬¡æ•¸: " << mouse.getMoveCount() << "\n";
             return mouse.getMoveCount();
         }
 
-        std::cout << "\n¥Ø«e¦ì¸m: (" << curr.x << ", " << curr.y << ")¡AÁ`²¾°Ê¦¸¼Æ: " << mouse.getMoveCount();
-        std::cout << "¡A¥i¨«¤è¦V: ";
+        std::cout << "\nç›®å‰ä½ç½®: (" << curr.x << ", " << curr.y << ")ï¼Œç¸½ç§»å‹•æ¬¡æ•¸: " << mouse.getMoveCount();
+        std::cout << "ï¼Œå¯èµ°æ–¹å‘: ";
         bool hasValidMove = false;
         for (int i = 0; i < 4; ++i) {
             Point next = { curr.x + Directions[i].x, curr.y + Directions[i].y };
@@ -293,8 +293,8 @@ int DynamicGame::play() {
                 hasValidMove = true;
             }
         }
-        if (!hasValidMove) std::cout << "µL¡]¦º¸ô¡^";
-        std::cout << "\n½Ğ¿é¤J¤è¦V¡G";
+        if (!hasValidMove) std::cout << "ç„¡ï¼ˆæ­»è·¯ï¼‰";
+        std::cout << "\nè«‹è¼¸å…¥æ–¹å‘ï¼š";
         char input;
         std::cin >> input;
         input = tolower(input);
@@ -308,28 +308,28 @@ int DynamicGame::play() {
         }
 
         if (DirIndex == -1) {
-            std::cout << "µL®Ä¿é¤J¡A½Ğ¿é¤J w/s/a/d¡C\n";
+            std::cout << "ç„¡æ•ˆè¼¸å…¥ï¼Œè«‹è¼¸å…¥ w/s/a/dã€‚\n";
             continue;
         }
 
         Point next = { curr.x + Directions[DirIndex].x, curr.y + Directions[DirIndex].y };
         if (!maze.isWalkable(next.x, next.y)) {
-            std::cout << "¨ºÃä¬OÀğ¾À¡A¤£¯à¨«¡I\n";
-             std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            std::cout << "é‚£é‚Šæ˜¯ç‰†å£ï¼Œä¸èƒ½èµ°ï¼\n";
+            waitForEnter();
             continue;
         }
 
         mouse.move(next);
-        // ¨C¦¸²¾°Ê«á¶i¦æÀË¬d©M­«ºc
-        // Àğ¾À­«ºcÀW²v¡G¨C 10 ¨B
+        // æ¯æ¬¡ç§»å‹•å¾Œé€²è¡Œæª¢æŸ¥å’Œé‡æ§‹
+        // ç‰†å£é‡æ§‹é »ç‡ï¼šæ¯ 10 æ­¥
         if (mouse.getMoveCount() % 10 == 0) {
             maze.reconstructWall(mouse.getPosition().x, mouse.getPosition().y, currentExit.x, currentExit.y);
-            std::cout << "\n°g®cÀğ¾À­«ºc¤F¡I\n";
+            std::cout << "\nè¿·å®®ç‰†å£é‡æ§‹äº†ï¼\n";
         }
-        // ¥X¤f²¾°ÊÀW²v¡G¨C 15 ¨B
+        // å‡ºå£ç§»å‹•é »ç‡ï¼šæ¯ 15 æ­¥
         if (mouse.getMoveCount() % 15 == 0) {
             currentExit = maze.relocateExit(mouse.getPosition().x, mouse.getPosition().y, currentExit);
-            std::cout << "\n¥X¤f¦ì¸m²¾°Ê¤F¡I\n";
+            std::cout << "\nå‡ºå£ä½ç½®ç§»å‹•äº†ï¼\n";
         }
     }
 }
