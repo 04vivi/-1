@@ -1,7 +1,15 @@
 #include "Utility.h"
 #include <string>
 
-// --- ³Ì²× ASCII ³Ó§Qµe­± ---
+
+void waitForEnter() {
+    std::cout << "æ’žåˆ°ç‰†äº†ï¼è«‹æŒ‰ Enter éµç¹¼çºŒ...";
+    std::cin.ignore(); // å¿½ç•¥ä¹‹å‰è¼¸å…¥ç•™ä¸‹çš„æ›è¡Œç¬¦
+    std::cin.get();    // ç­‰å¾…çŽ©å®¶æŒ‰ Enter
+}
+
+
+// --- æœ€çµ‚ ASCII å‹åˆ©ç•«é¢ ---
 void printVictoryScreen() {
     const std::string message[] = {
         "  ___    ___ ________  ___  ___          ___       __   ___  ________      ",
@@ -19,7 +27,7 @@ void printVictoryScreen() {
             width = line.length();
     }
 
-    std::string border = "ùÝ" + std::string(width + 78, 'ùù') + "ùß";
+    std::string border = "â•”" + std::string(width + 78, '=') + "â•—";
 
     auto centerAlign = [](const std::string& text, size_t w) {
         size_t left_padding = (w - text.length()) / 2;
@@ -29,7 +37,7 @@ void printVictoryScreen() {
 
     std::cout << "\n" << border << "\n";
     for (const auto& line : message) {
-        std::cout << "ùø " << centerAlign(line, width) << " ùø\n";
+        std::cout << "|| " << centerAlign(line, width) << " ||\n";
     }
-    std::cout << "ùã" << std::string(width + 78, 'ùù') + "ùå\n\n";
+    std::cout << "â•š" << std::string(width + 78, 'â•') + "â•\n\n";
 }
