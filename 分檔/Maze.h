@@ -6,65 +6,65 @@
 #include <random>
 #include <chrono>
 #include <queue> // For BFS
-#include "Point.h" // ¥]§t Point Ãş§O
+#include "Point.h" // åŒ…å« Point é¡åˆ¥
 
-// --- Visibility ¦CÁ| (¶È¥Î©ó°gÃúÃö¥d) ---
+// --- Visibility åˆ—èˆ‰ (åƒ…ç”¨æ–¼è¿·éœ§é—œå¡) ---
 enum Visibility {
-    UNSEEN,      // ª±®a±q¥¼¨ì³X©Î¨£¹Lªº°Ï°ì (Åã¥Ü¬° '.')
-    SEEN_BEFORE, // ª±®a´¿¸g¬İ¨ì¹L¡A¦ı¥Ø«e¤£¦b·í«eµø³¥½d³ò¤ºªº°Ï°ì (Åã¥Ü¬° '-')
-    VISIBLE      // ª±®a·í«eµø³¥½d³ò¤ºªº°Ï°ì (Åã¥Ü¹ê»Ú¤º®e)
-};
+    UNSEEN,      // ç©å®¶å¾æœªåˆ°è¨ªæˆ–è¦‹éçš„å€åŸŸ (é¡¯ç¤ºç‚º '.')
+    SEEN_BEFORE, // ç©å®¶æ›¾ç¶“çœ‹åˆ°éï¼Œä½†ç›®å‰ä¸åœ¨ç•¶å‰è¦–é‡ç¯„åœå…§çš„å€åŸŸ (é¡¯ç¤ºç‚º '-')
+    VISIBLE      // ç©å®¶ç•¶å‰è¦–é‡ç¯„åœå…§çš„å€åŸŸ (é¡¯ç¤ºå¯¦éš›å…§å®¹)
+};//å®šç¾©åœ°åœ–æ ¼å­çš„å¯è¦‹ç‹€æ…‹
 
-// --- Maze Ãş§O ---
+// --- Maze é¡åˆ¥ ---
 class Maze {
 private:
-    std::vector<std::vector<char>> mazeGrid; // ¨p¦³¦¨­û
-    std::vector<std::vector<Visibility>> visibility; // ¶È¥Î©ó°gÃú¨t²Î
-    bool isFoggy; // ¼Ğ°O¦¹°g®c¬O§_¨Ï¥Î°gÃú
-    bool isDynamic; // ¼Ğ°O¦¹°g®c¬O§_¬°°ÊºA°g®c
+    std::vector<std::vector<char>> mazeGrid; // ç§æœ‰æˆå“¡
+    std::vector<std::vector<Visibility>> visibility; // åƒ…ç”¨æ–¼è¿·éœ§ç³»çµ±
+    bool isFoggy; // æ¨™è¨˜æ­¤è¿·å®®æ˜¯å¦ä½¿ç”¨è¿·éœ§
+    bool isDynamic; // æ¨™è¨˜æ­¤è¿·å®®æ˜¯å¦ç‚ºå‹•æ…‹è¿·å®®
 
     int MAZE_WIDTH;
     int MAZE_HEIGHT;
 
-    // ÀH¾÷¼Æ¥Í¦¨¾¹
+    // éš¨æ©Ÿæ•¸ç”Ÿæˆå™¨
     std::mt19937 rng;
 
 public:
-    // «Øºc¤l 1¡G¥Î©ó int ºô®æ (Ãö¥d 1-4)
+    // å»ºæ§‹å­ 1ï¼šç”¨æ–¼ int ç¶²æ ¼ (é—œå¡ 1-4)
     Maze(const std::vector<std::vector<int>>& initialGrid);
-    // «Øºc¤l 2¡G¥Î©ó string ¦V¶q (Ãö¥d 5 - °gÃú¨t²Î)
+    // å»ºæ§‹å­ 2ï¼šç”¨æ–¼ string å‘é‡ (é—œå¡ 5 - è¿·éœ§ç³»çµ±)
     Maze(const std::vector<std::string>& initialRawMaze);
-    // «Øºc¤l 3¡G¥Î©ó°ÊºA°g®c (Ãö¥d 6 - ­«ºc¨t²Î)
+    // å»ºæ§‹å­ 3ï¼šç”¨æ–¼å‹•æ…‹è¿·å®® (é—œå¡ 6 - é‡æ§‹ç³»çµ±)
     Maze(int width, int height, bool dynamic = true);
 
-    // ªì©l¥Í¦¨ÀH¾÷°g®c (¥Î©óÃö¥d 6 ªº Maze «Øºc¤l)
+    // åˆå§‹ç”Ÿæˆéš¨æ©Ÿè¿·å®® (ç”¨æ–¼é—œå¡ 6 çš„ Maze å»ºæ§‹å­)
     void generateInitialRandomMaze();
 
-    // ­«ºcÀğ¾À (¥Î©óÃö¥d 6)¡A¨Ã½T«O¥i¹F©Ê
+    // é‡æ§‹ç‰†å£ (ç”¨æ–¼é—œå¡ 6)ï¼Œä¸¦ç¢ºä¿å¯é”æ€§
     void reconstructWall(int playerX, int playerY, int exitX, int exitY);
 
-    // ­«·s©w¦ì¥X¤f (¥Î©óÃö¥d 6)¡A¨Ã½T«O¥i¹F©Ê
+    // é‡æ–°å®šä½å‡ºå£ (ç”¨æ–¼é—œå¡ 6)ï¼Œä¸¦ç¢ºä¿å¯é”æ€§
     Point relocateExit(int playerX, int playerY, Point currentExit);
 
-    // §ó·s°gÃúµø³¥ (¶È¥Î©ó°gÃúÃö¥d)
+    // æ›´æ–°è¿·éœ§è¦–é‡ (åƒ…ç”¨æ–¼è¿·éœ§é—œå¡)
     void updateVisibility(int playerX, int playerY, int radius = 3);
 
-    // Ã¸»s°g®c¨ì±±¨î¥x¡A¦Ò¼{ª±®a¡B½c¤l¡B¥X¤f©M¥i¨£©Ê
+    // ç¹ªè£½è¿·å®®åˆ°æ§åˆ¶å°ï¼Œè€ƒæ…®ç©å®¶ã€ç®±å­ã€å‡ºå£å’Œå¯è¦‹æ€§
     void display(const Point& mouse, const Point& exit, const Point* box = nullptr, const Point* target = nullptr) const;
 
-    // ÀË¬d«ü©w®y¼Ğ¬O§_¥i³q¦æ (¤£·|¼²Àğ)
+    // æª¢æŸ¥æŒ‡å®šåº§æ¨™æ˜¯å¦å¯é€šè¡Œ (ä¸æœƒæ’ç‰†)
     bool isWalkable(int x, int y) const;
 
-    // ÀË¬d±q°_ÂI¨ì²×ÂI¬O§_¦³¸ô®| (¨Ï¥Î BFS)
+    // æª¢æŸ¥å¾èµ·é»åˆ°çµ‚é»æ˜¯å¦æœ‰è·¯å¾‘ (ä½¿ç”¨ BFS)
     bool hasPath(int startX, int startY, int endX, int endY) const;
 
-    // Àò¨ú°g®c³æ¤¸®æªº¤º®e
+    // ç²å–è¿·å®®å–®å…ƒæ ¼çš„å…§å®¹
     char getCell(int x, int y) const;
 
-    // ³]¸m°g®c³æ¤¸®æªº¤º®e (·s¼Wªº¤½¦@¤èªk)
+    // è¨­ç½®è¿·å®®å–®å…ƒæ ¼çš„å…§å®¹ (æ–°å¢çš„å…¬å…±æ–¹æ³•)
     void setCell(int x, int y, char value);
 
-    // ´M§ä¯S©w¦r¤¸¦b°g®c¤¤ªº¦ì¸m (¥Î©ó string ºô®æªº P ©M E)
+    // å°‹æ‰¾ç‰¹å®šå­—å…ƒåœ¨è¿·å®®ä¸­çš„ä½ç½® (ç”¨æ–¼ string ç¶²æ ¼çš„ P å’Œ E)
     Point findChar(char c) const;
 
     int getWidth() const;
