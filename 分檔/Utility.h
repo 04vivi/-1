@@ -4,14 +4,16 @@
 #include <iostream>
 #include <string>
 
-// ®Ú¾Ú§@·~¨t²Î©w¸q²M«Ì©R¥O
+// æ ¹æ“šä½œæ¥­ç³»çµ±å®šç¾©æ¸…å±å‘½ä»¤
 #ifdef _WIN32
-#define CLEAR_SCREEN "cls" // Windows ¨t²Î¨Ï¥Î cls
+#define CLEAR_SCREEN "cls" // Windows ç³»çµ±ä½¿ç”¨ cls
 #else
-#define CLEAR_SCREEN "clear" // Linux/macOS ¨t²Î¨Ï¥Î clear
+#define CLEAR_SCREEN "clear" // Linux/macOS ç³»çµ±ä½¿ç”¨ clear
 #endif
 
-// --- ³Ì²× ASCII ³Ó§Qµe­± ---
+
 void printVictoryScreen();
+void waitForEnter();//æŒ‰ä¸‹enteræ‰å¯ä»¥ç¹¼çºŒ
+
 
 #endif // UTILITY_H
