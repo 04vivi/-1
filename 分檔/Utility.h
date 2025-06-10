@@ -13,7 +13,7 @@
 
 
 void printVictoryScreen();
-void waitForEnter();//按下enter才可以繼續
-
+void waitForEnter();//撞到牆壁，按下enter才可以繼續
+void Enter();//按下enter繼續，用於解釋畫面
 
 #endif // UTILITY_H
