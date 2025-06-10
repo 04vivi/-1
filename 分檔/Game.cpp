@@ -29,7 +29,7 @@ NormalGame::NormalGame(const std::vector<std::vector<int>>& mazeData, Point star
 int NormalGame::play() {
     std::cout << "\n--- 普通迷宮關卡 ---\n";
     std::cout << "使用 w/a/s/d 控制老鼠(@)走出迷宮(+)。\n";
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    Enter();
 
     while (true) {
         system(CLEAR_SCREEN);
@@ -91,7 +91,7 @@ int BoxGame::play() {
     std::cout << "\n--- 推箱子迷宮關卡 ---\n";
     std::cout << "你必須把箱子(2)推到 X 才能走出迷宮(+)！\n";
     std::cout << "輸入 r 可重置位置。\n";
-    std::this_thread::sleep_for(std::chrono::seconds(3));
+    Enter();
 
 
     while (true) {
@@ -184,7 +184,7 @@ int FogGame::play() {
     std::cout << "\n--- 迷霧迷宮關卡 ---\n";
     std::cout << "部分區域被迷霧籠罩，只有探索才能揭開全貌！\n";
     std::cout << "使用 w/a/s/d 控制老鼠(@)走出迷宮(+)。\n";
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    Enter();
 
     while (true) {
         system(CLEAR_SCREEN);
@@ -270,7 +270,7 @@ int DynamicGame::play() {
     std::cout << "每移動 10 步，迷宮中的牆壁會隨機重構！\n";
     std::cout << "每移動 15 步，出口(+)會隨機移動！\n";
     std::cout << "使用 w/a/s/d 控制老鼠(@)走出迷宮(+)。\n";
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    Enter();
 
     while (true) {
         system(CLEAR_SCREEN);
